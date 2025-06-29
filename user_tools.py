@@ -176,7 +176,15 @@ class User:
 
                     terms = self.get_terminals(elm)
                     for term in terms:
-                        row = [idx_term, idx_elm, term["TerminalNumber"], term["MW"], term["Mvar"]]
+                        row = [
+                            idx_term, 
+                            idx_elm, 
+                            term["TerminalNumber"], 
+                            term["MW"], 
+                            term["Mvar"],
+                            term["u_mag"],
+                            term["u_deg"]
+                            ]
                         term_writer.writerow(row)
                         idx_term += 1
                 idx_elm += 1
@@ -194,15 +202,57 @@ class User:
         terms = []
         class_name = pf_object.GetClassName()
 
-        if class_name == "ElmLod":
+        if class_name == "ElmLod" or class_name == "ElmSym" or class_name == "ElmGenstat" or class_name == "ElmSvs":
             try:
-                MW = str(pf_object.GetAttribute("m:P:bus1"))
-                Mvar = str(pf_object.GetAttribute("m:Q:bus1"))
-                u_mag = str(pf_object.GetAttribute("n:u:bus1"))
-                u_deg = str(pf_object.GetAttribute("n:phiu:bus1"))
+                MW = str(pf_object.GetAttribute("m:Psum:bus1"))
+                Mvar = str(pf_object.GetAttribute("m:Qsum:bus1"))
+                u_mag = str(pf_object.GetAttribute("m:u1:bus1"))
+                u_deg = str(pf_object.GetAttribute("m:phiu1:bus1"))
                 terms = [{"TerminalNumber": "bus1", "MW": MW, "Mvar": Mvar, "u_mag": u_mag, "u_deg": u_deg}]
             except AttributeError:
                 pass
+        elif class_name == "ElmLne":
+            try:
+                MW1 = str(pf_object.GetAttribute("m:Psum:bus1"))
+                Mvar1 = str(pf_object.GetAttribute("m:Qsum:bus1"))
+                u_mag1 = str(pf_object.GetAttribute("m:u1:bus1"))
+                u_deg1 = str(pf_object.GetAttribute("m:phiu1:bus1"))
+
+                MW2 = str(pf_object.GetAttribute("m:Psum:bus2"))
+                Mvar2 = str(pf_object.GetAttribute("m:Qsum:bus2"))
+                u_mag2 = str(pf_object.GetAttribute("m:u1:bus2"))
+                u_deg2 = str(pf_object.GetAttribute("m:phiu1:bus2"))
+
+                terms = [{"TerminalNumber": "bus1", "MW": MW1, "Mvar": Mvar1, "u_mag": u_mag1, "u_deg": u_deg1}]
+                terms += [{"TerminalNumber": "bus2", "MW": MW2, "Mvar": Mvar2, "u_mag": u_mag2, "u_deg": u_deg2}]
+            except AttributeError:
+                pass
+        elif class_name == "ElmTr2" or class_name == "ElmTr3":
+            try:
+                MW1 = str(pf_object.GetAttribute("m:Psum:bushv"))
+                Mvar1 = str(pf_object.GetAttribute("m:Qsum:bushv"))
+                u_mag1 = str(pf_object.GetAttribute("m:u1:bushv"))
+                u_deg1 = str(pf_object.GetAttribute("m:phiu1:bushv"))
+
+                MW3 = str(pf_object.GetAttribute("m:Psum:buslv"))
+                Mvar3 = str(pf_object.GetAttribute("m:Qsum:buslv"))
+                u_mag3 = str(pf_object.GetAttribute("m:u1:buslv"))
+                u_deg3 = str(pf_object.GetAttribute("m:phiu1:buslv"))
+
+                terms = [{"TerminalNumber": "bushv", "MW": MW1, "Mvar": Mvar1, "u_mag": u_mag1, "u_deg": u_deg1}]
+                terms += [{"TerminalNumber": "buslv", "MW": MW3, "Mvar": Mvar3, "u_mag": u_mag3, "u_deg": u_deg3}]
+            except AttributeError:
+                pass
+            if class_name == "ElmTr3":
+                try:
+                    MW2 = str(pf_object.GetAttribute("m:Psum:buslv"))
+                    Mvar2 = str(pf_object.GetAttribute("m:Qsum:buslv"))
+                    u_mag2 = str(pf_object.GetAttribute("m:u1:buslv"))
+                    u_deg2 = str(pf_object.GetAttribute("m:phiu1:buslv"))
+
+                    terms += [{"TerminalNumber": "busmv", "MW": MW2, "Mvar": Mvar2, "u_mag": u_mag2, "u_deg": u_deg2}]
+                except AttributeError:
+                    pass
 
         return terms
     
