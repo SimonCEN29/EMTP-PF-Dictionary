@@ -16,10 +16,10 @@ if __name__ == '__main__':
     data.run_load_flow()
 
     csv_headers = {
-        "PowerSystemResource": ["idx_psr", "FullName", "ShortName", "Extension"],
-        "Terminal": ["idx_term", "idx_psr", "TerminalNumber", "MW", "Mvar", "u_mag", "u_deg"],
-        "Load": ["idx_load", "idx_psr"],
-        "Src": ["idx_src", "idx_psr"]
+        "PowerSystemResource": ["PsrID", "FullName", "ShortName", "Extension"],
+        "Terminal": ["TermID", "PsrID", "TerminalNumber", "MW", "Mvar", "u_mag", "u_deg"],
+        "Load": ["LoadID", "PsrID"],
+        "Src": ["SrcID", "PsrID"]
     }
 
     dir = user_tools.Directory(r"C:\Git Codes\EMTP-FP Dic Output")

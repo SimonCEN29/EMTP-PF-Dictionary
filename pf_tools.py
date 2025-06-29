@@ -43,7 +43,7 @@ class PfData:
         elms.extend(ibrs)
         elms.extend(cers)
 
-        idx_psr, idx_term, idx_load, idx_src = 0, 0, 0, 0
+        PsrID, TermID, LoadID, SrcID = 1, 1, 1, 1
 
         with psr_csv_path.open("a", newline="", encoding=encoding) as f1:
             psr_writer = csv.writer(f1)
@@ -57,21 +57,21 @@ class PfData:
                 full_name = full_name.replace("\u2013", "-").replace("\u2014", "-")
                 short_name = short_name.replace("\u2013", "-").replace("\u2014", "-")
 
-                row = [idx_psr, full_name, short_name, class_name]
+                row = [PsrID, full_name, short_name, class_name]
                 psr_writer.writerow(row)
 
                 if class_name == "ElmLod":
                     with load_csv_path.open("a", newline="", encoding=encoding) as f2:
                         load_writer = csv.writer(f2)
-                        row = [idx_load, idx_psr]
+                        row = [LoadID, PsrID]
                         load_writer.writerow(row)
-                        idx_load += 1
+                        LoadID += 1
                 elif class_name in ("ElmSym", "ElmGenstat", "ElmSvs"):
                     with src_csv_path.open("a", newline="", encoding=encoding) as f2:
                         src_writer = csv.writer(f2)
-                        row = [idx_src, idx_psr]
+                        row = [SrcID, PsrID]
                         src_writer.writerow(row)
-                        idx_src += 1
+                        SrcID += 1
 
                 with term_csv_path.open("a", newline="", encoding=encoding) as f2:
                     term_writer = csv.writer(f2)
@@ -79,8 +79,8 @@ class PfData:
                     terms = self.get_terminals(elm)
                     for term in terms:
                         row = [
-                            idx_term, 
-                            idx_psr, 
+                            TermID, 
+                            PsrID, 
                             term["TerminalNumber"], 
                             term["MW"], 
                             term["Mvar"],
@@ -88,8 +88,8 @@ class PfData:
                             term["u_deg"]
                             ]
                         term_writer.writerow(row)
-                        idx_term += 1
-                idx_psr += 1
+                        TermID += 1
+                PsrID += 1
 
         return None
     
@@ -97,7 +97,7 @@ class PfData:
         terms = []
         class_name = pf_object.GetClassName()
 
-        if class_name == "ElmLod" or class_name == "ElmSym" or class_name == "ElmGenstat" or class_name == "ElmSvs":
+        if class_name in ("ElmLod", "ElmSym", "ElmGenstat", "ElmSvs"):
             try:
                 MW = str(pf_object.GetAttribute("m:Psum:bus1"))
                 Mvar = str(pf_object.GetAttribute("m:Qsum:bus1"))
@@ -122,7 +122,7 @@ class PfData:
                 terms += [{"TerminalNumber": "bus2", "MW": MW2, "Mvar": Mvar2, "u_mag": u_mag2, "u_deg": u_deg2}]
             except AttributeError:
                 pass
-        elif class_name == "ElmTr2" or class_name == "ElmTr3":
+        elif class_name in ("ElmTr2", "ElmTr3"):
             try:
                 MW1 = str(pf_object.GetAttribute("m:Psum:bushv"))
                 Mvar1 = str(pf_object.GetAttribute("m:Qsum:bushv"))
