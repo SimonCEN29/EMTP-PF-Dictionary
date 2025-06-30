@@ -103,7 +103,7 @@ class PfData:
                 Mvar = str(pf_object.GetAttribute("m:Qsum:bus1"))
                 u_mag = str(pf_object.GetAttribute("m:u1:bus1"))
                 u_deg = str(pf_object.GetAttribute("m:phiu1:bus1"))
-                terms = [{"TerminalNumber": "bus1", "MW": MW, "Mvar": Mvar, "u_mag": u_mag, "u_deg": u_deg}]
+                terms = [{"TerminalNumber": "1", "MW": MW, "Mvar": Mvar, "u_mag": u_mag, "u_deg": u_deg}]
             except AttributeError:
                 pass
         elif class_name == "ElmLne":
@@ -118,8 +118,8 @@ class PfData:
                 u_mag2 = str(pf_object.GetAttribute("m:u1:bus2"))
                 u_deg2 = str(pf_object.GetAttribute("m:phiu1:bus2"))
 
-                terms = [{"TerminalNumber": "bus1", "MW": MW1, "Mvar": Mvar1, "u_mag": u_mag1, "u_deg": u_deg1}]
-                terms += [{"TerminalNumber": "bus2", "MW": MW2, "Mvar": Mvar2, "u_mag": u_mag2, "u_deg": u_deg2}]
+                terms = [{"TerminalNumber": "1", "MW": MW1, "Mvar": Mvar1, "u_mag": u_mag1, "u_deg": u_deg1}]
+                terms += [{"TerminalNumber": "2", "MW": MW2, "Mvar": Mvar2, "u_mag": u_mag2, "u_deg": u_deg2}]
             except AttributeError:
                 pass
         elif class_name in ("ElmTr2", "ElmTr3"):
@@ -134,8 +134,8 @@ class PfData:
                 u_mag3 = str(pf_object.GetAttribute("m:u1:buslv"))
                 u_deg3 = str(pf_object.GetAttribute("m:phiu1:buslv"))
 
-                terms = [{"TerminalNumber": "bushv", "MW": MW1, "Mvar": Mvar1, "u_mag": u_mag1, "u_deg": u_deg1}]
-                terms += [{"TerminalNumber": "buslv", "MW": MW3, "Mvar": Mvar3, "u_mag": u_mag3, "u_deg": u_deg3}]
+                terms = [{"TerminalNumber": "3", "MW": MW1, "Mvar": Mvar1, "u_mag": u_mag1, "u_deg": u_deg1}]
+                terms += [{"TerminalNumber": "5", "MW": MW3, "Mvar": Mvar3, "u_mag": u_mag3, "u_deg": u_deg3}]
             except AttributeError:
                 pass
             if class_name == "ElmTr3":
@@ -145,7 +145,7 @@ class PfData:
                     u_mag2 = str(pf_object.GetAttribute("m:u1:busmv"))
                     u_deg2 = str(pf_object.GetAttribute("m:phiu1:busmv"))
 
-                    terms += [{"TerminalNumber": "busmv", "MW": MW2, "Mvar": Mvar2, "u_mag": u_mag2, "u_deg": u_deg2}]
+                    terms += [{"TerminalNumber": "4", "MW": MW2, "Mvar": Mvar2, "u_mag": u_mag2, "u_deg": u_deg2}]
                 except AttributeError:
                     pass
 

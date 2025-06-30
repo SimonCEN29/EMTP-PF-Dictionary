@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     csv_headers = {
         "PowerSystemResource": ["PsrID", "FullName", "ShortName", "Extension"],
-        "Terminal": ["TermID", "PsrID", "TerminalNumber", "MW", "Mvar", "u_mag", "u_deg"],
+        "Terminal": ["TermID", "PsrID", "TerminalSideID", "MW", "Mvar", "u_mag", "u_deg"],
         "Load": ["LoadID", "PsrID"],
         "Src": ["SrcID", "PsrID"]
     }
