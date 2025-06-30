@@ -140,10 +140,10 @@ class PfData:
                 pass
             if class_name == "ElmTr3":
                 try:
-                    MW2 = str(pf_object.GetAttribute("m:Psum:buslv"))
-                    Mvar2 = str(pf_object.GetAttribute("m:Qsum:buslv"))
-                    u_mag2 = str(pf_object.GetAttribute("m:u1:buslv"))
-                    u_deg2 = str(pf_object.GetAttribute("m:phiu1:buslv"))
+                    MW2 = str(pf_object.GetAttribute("m:Psum:busmv"))
+                    Mvar2 = str(pf_object.GetAttribute("m:Qsum:busmv"))
+                    u_mag2 = str(pf_object.GetAttribute("m:u1:busmv"))
+                    u_deg2 = str(pf_object.GetAttribute("m:phiu1:busmv"))
 
                     terms += [{"TerminalNumber": "busmv", "MW": MW2, "Mvar": Mvar2, "u_mag": u_mag2, "u_deg": u_deg2}]
                 except AttributeError:
