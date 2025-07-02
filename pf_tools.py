@@ -34,6 +34,7 @@ class PfData:
         gens = network_data.GetContents('*.ElmSym', 1)
         ibrs = network_data.GetContents('*.ElmGenstat', 1)
         cers = network_data.GetContents('*.ElmSvs', 1)
+        genas = network_data.GetContents('*.ElmAsm', 1)
 
         elms = loads
         elms.extend(tlines)
@@ -42,6 +43,7 @@ class PfData:
         elms.extend(gens)
         elms.extend(ibrs)
         elms.extend(cers)
+        elms.extend(genas)
 
         PsrID, TermID, LoadID, SrcID = 1, 1, 1, 1
 
@@ -66,7 +68,7 @@ class PfData:
                         row = [LoadID, PsrID]
                         load_writer.writerow(row)
                         LoadID += 1
-                elif class_name in ("ElmSym", "ElmGenstat", "ElmSvs"):
+                elif class_name in ("ElmSym", "ElmGenstat", "ElmSvs", "ElmAsm"):
                     with src_csv_path.open("a", newline="", encoding=encoding) as f2:
                         src_writer = csv.writer(f2)
                         row = [SrcID, PsrID]
@@ -103,7 +105,7 @@ class PfData:
         MW4, Mvar4, u_mag4, u_deg4 = "0", "0", "0", "0"
         MW5, Mvar5, u_mag5, u_deg5 = "0", "0", "0", "0"
 
-        if class_name in ("ElmLod", "ElmSym", "ElmGenstat", "ElmSvs"):
+        if class_name in ("ElmLod", "ElmSym", "ElmGenstat", "ElmSvs", "ElmAsm"):
             try:
                 MW1 = str(pf_object.GetAttribute("m:Psum:bus1"))
                 Mvar1 = str(pf_object.GetAttribute("m:Qsum:bus1"))

@@ -22,7 +22,7 @@ if __name__ == '__main__':
         "Src": ["SrcID", "PsrID"]
     }
 
-    dir = user_tools.Directory()
+    dir = user_tools.Directory(r"C:\Users\kelly.allendes\Downloads")
     csv_files = dir.print_headers(csv_headers, "latin-1")
 
     data.get_elms(csv_files, csv_headers, "latin-1")
