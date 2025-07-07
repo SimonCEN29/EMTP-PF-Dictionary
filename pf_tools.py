@@ -1,5 +1,6 @@
 import csv
 import unicodedata
+from pathlib import Path
 
 class PfData:
     def __init__(self, app):
@@ -21,10 +22,10 @@ class PfData:
         return full_name
 
     def get_elms(self, file_paths, file_headers, encoding="utf-8"):
-        psr_csv_path = file_paths[0]
-        term_csv_path = file_paths[1]
-        load_csv_path = file_paths[2]
-        src_csv_path = file_paths[3]
+        psr_csv_path: Path = file_paths[0]
+        term_csv_path: Path = file_paths[1]
+        load_csv_path: Path = file_paths[2]
+        src_csv_path: Path = file_paths[3]
 
         network_data = self.app.GetProjectFolder("netdat")
         loads = network_data.GetContents('*.ElmLod', 1)
@@ -36,7 +37,7 @@ class PfData:
         cers = network_data.GetContents('*.ElmSvs', 1)
         genas = network_data.GetContents('*.ElmAsm', 1)
 
-        elms = loads
+        elms: list = loads
         elms.extend(tlines)
         elms.extend(tr2s)
         elms.extend(tr3s)
